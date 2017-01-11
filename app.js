@@ -59,18 +59,20 @@ app.get("/content", function(req, res) {
         var $ = cheerio.load(html);
         var img = [];
 
-        var entire = $("#main-wrapper .entry").html();
-
         $("#main-wrapper .entry img").each(function(i, image) {
           var srcUrl = url.resolve(page_url, $(image).attr('src'));
-          var fileName = './images/' + srcUrl.split("/").pop();
+          var localUrl = './images/' + srcUrl.split("/").pop();
 
-          download(srcUrl, fileName, function(){
-            console.log(fileName + ' downloaded...\n');
+          download(srcUrl, localUrl, function(){
+            console.log(localUrl + ' downloaded...\n');
           });
 
-          img.push({url:srcUrl, local:fileName});
+          img.push({url:srcUrl, local:localUrl});
+
+          $(image).attr('src', localUrl);
         });
+
+        var entire = $("#main-wrapper .entry").html();
         
         data.push({content:entire, img: img});
 

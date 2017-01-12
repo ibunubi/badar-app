@@ -1,3 +1,5 @@
+"use strict";
+
 var app = require('express')(),
   request = require('request'),
   url = require('url'),
@@ -5,25 +7,36 @@ var app = require('express')(),
   fs = require('fs');
 
 app.get('/', function(req, res) {
-  res.send("Hello Badar Scrap");
+  var dirStucture = ['data', 'content', 'images'];
+  let dir = '';
+  dirStucture.map((value, index) => {
+    if(index < 1)
+      dir = '.';
+    dir += '/' + value;
+    if (!fs.existsSync(dir)){
+      fs.mkdirSync(dir);
+    }
+  });
+  
+  res.send("Run me first please muehehehe :D");
 });
 
 app.get('/table-of-content', function(req, res) {
-  var url = "http://badaronline.com/daftar-isi";
+  let url = "http://badaronline.com/daftar-isi";
 
   request(url, function (error, response, html) {
     if (!error && response.statusCode == 200) {
       
-      var $ = cheerio.load(html);
-      var data = [];
+      let $ = cheerio.load(html);
+      let data = [];
 
-      $("#main-wrapper .entry ul li").each(function(i, dom){
-        var link = $(dom).closest("a").attr("href");
-        var title = $(dom).closest("a").html();
-        data.push({link:link, title:title});
+      $("#main-wrapper .entry ul li a").each(function(i, dom){
+        var url = $(dom).attr("href");
+        var title = $(dom).html();
+        data.push({url:url, title:title});
       });
 
-      fs.writeFile('table-of-content.json', JSON.stringify(data, null, 2), function(err){
+      fs.writeFile('./data/table-of-content.json', JSON.stringify(data, null, 2), function(err){
         if (err) throw err;
         console.log('Table of content moved to json file!');
       });
@@ -47,21 +60,21 @@ const download = function(uri, filename, callback){
 };
 
 app.get("/content", function(req, res) {
-  var loadContent = fs.readFileSync('table-of-content.json');
-  var tableOfContent = JSON.parse(loadContent);
+  let loadContent = fs.readFileSync('./data/table-of-content.json');
+  let tableOfContent = JSON.parse(loadContent);
 
-  tableOfContent.each(function(i, o){
+  Promise.all(tableOfContent.map(function(o, i){
+    return new Promise(function(resolve, reject){
+      console.log("request : " + o.url);
+      request(o.url, function (error, response, html) {
+        if (error) {return reject(error);}
 
-    var data = [];
-    request(o.link, function (error, response, html) {
-      if (!error && response.statusCode == 200) {
-        
-        var $ = cheerio.load(html);
-        var img = [];
+        let $ = cheerio.load(html);
+        let img = [];
 
         $("#main-wrapper .entry img").each(function(i, image) {
-          var srcUrl = url.resolve(page_url, $(image).attr('src'));
-          var localUrl = './images/' + srcUrl.split("/").pop();
+          let srcUrl = $(image).attr('src');
+          let localUrl = './data/content/images/' + srcUrl.split("/").pop();
 
           download(srcUrl, localUrl, function(){
             console.log(localUrl + ' downloaded...\n');
@@ -72,19 +85,31 @@ app.get("/content", function(req, res) {
           $(image).attr('src', localUrl);
         });
 
-        var entire = $("#main-wrapper .entry").html();
+        let entire = $("#main-wrapper .entry").html();
         
-        data.push({content:entire, img: img});
+        resolve({content:entire, img:img, title:o.title});
 
-      } else {
-        console.log(error);
-      }
+      });
+    });
+  })).then(function(result) {
+
+    result.map(function(data, index){
+
+      let onDisk = index + '-' + data.title.replace(/ /g, '-').replace(/:/g, '').replace(/&#x2018;/g, '').replace(/&#x2019;/g, '').toLowerCase();
+
+      fs.writeFile('./data/content/' + onDisk + '.json', JSON.stringify(data, null, 2), function(err){
+        if (err) throw err;
+        console.log('Table of content moved to json file!');
+      });
+
     });
 
+  }).catch(function (err) {
+    console.log(err);
   });
 
 });
 
 app.listen(3000, function () {
-  console.log('Magic happen on port 3000!');
+  console.log('Magic happen on http://localhost:3000/');
 });

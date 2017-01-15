@@ -46,7 +46,8 @@ router.get('/table-of-content', (req, res) => {
       $('#main-wrapper .entry ul li a').each((i, dom) => {
         var url = $(dom).attr('href');
         var title = $(dom).html();
-        data.push({url:url, title:title});
+        var onDisk = './data/content/' + i + '-' + title.replace(/ /g, '-').replace(/:/g, '').replace(/&#x2018;/g, '').replace(/&#x2019;/g, '').toLowerCase() + '.json';
+        data.push({url:url, title:title, onDisk:onDisk});
       });
 
       fs.writeFile('./data/table-of-content.json', JSON.stringify(data, null, 2), (err) => {
@@ -93,7 +94,7 @@ router.get('/content', (req, res) => {
         let soundFile = '-';
         if(qs.length > 0){
           qs = qs.replace('AudioPlayer.embed("audioplayer_1",', '').replace(');', '').trim().replace('soundFile', '"soundFile"');
-          console.log(i, 'Reading table of content', o.url);
+          
           qs = JSON.parse(qs);
           soundFile = qs.soundFile;
           soundFile = new Buffer(soundFile, 'base64').toString('ascii');
@@ -114,7 +115,7 @@ router.get('/content', (req, res) => {
 
         let entire = $('#main-wrapper .entry').html();
         
-        resolve({content:entire, img:img, title:o.title, soundFile: soundFile});
+        resolve({content:entire, img:img, title:o.title, onDisk:o.onDisk, soundFile: soundFile});
 
       });
     });
@@ -124,11 +125,9 @@ router.get('/content', (req, res) => {
 
     result.map((data, index) => {
 
-      let onDisk = index + '-' + data.title.replace(/ /g, '-').replace(/:/g, '').replace(/&#x2018;/g, '').replace(/&#x2019;/g, '').toLowerCase();
-
-      fs.writeFile('./data/content/' + onDisk + '.json', JSON.stringify(data, null, 2), (err)=> {
+      fs.writeFile(data.onDisk, JSON.stringify(data, null, 2), (err)=> {
         if (err) throw err;
-        console.log('Content moved to json file!');
+        console.log(data.title, 'Content moved to json file!');
       });
 
     });

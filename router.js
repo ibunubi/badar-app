@@ -3,7 +3,6 @@
 var express = require('express'),
   request = require('request'),
   url = require('url'),
-  util = require('util'),
   cheerio = require('cheerio'),
   fs = require('fs'),
   router = express.Router(),
@@ -11,7 +10,7 @@ var express = require('express'),
 
 // generate folder requirement
 router.get('/', (req, res) => {
-  var dirMain = ['data', 'content', 'images'];
+  var dirMain = ['data', 'content'];
   let dir = '';
   dirMain.map((value, index) => {
     if(index < 1)
@@ -22,7 +21,7 @@ router.get('/', (req, res) => {
     }
   });
 
-  var dirData = ['images', 'sound'];
+  var dirData = ['images', 'sounds'];
   dirData.map((value, index) => {
     var mkdir = dir + '/' + value;
     if (!fs.existsSync(mkdir)){
@@ -73,7 +72,6 @@ router.get('/content', (req, res) => {
   console.log('Opening table of content');
 
   Promise.all(tableOfContent.map((o, i) => {
-    console.log('Reading table of content');
     return new Promise((resolve, reject) => {
       request(o.url,  (error, response, html) => {
         if (error) {return reject(error);}
@@ -91,15 +89,17 @@ router.get('/content', (req, res) => {
         });
 
 
-        var qs = $('#main-wrapper .entry p.audioplayer_container param[name="flashvars"]').attr('value');
-        qs = '?' + qs;
-        qs = qs.replace(/&amp;/g, '&');
-        qs = url.parse(qs, true );
-        qs = qs.query;
-        var soundFile = qs.soundFile;
-        // soundFile = new Buffer(soundFile, 'base64').toString('ascii');
-        // soundFile = soundFile.split('/').pop();
-        // soundFile = './data/content/sound/' + soundFile;
+        let qs = $('#main-wrapper .entry p script').text();
+        let soundFile = '-';
+        if(qs.length > 0){
+          qs = qs.replace('AudioPlayer.embed("audioplayer_1",', '').replace(');', '').trim().replace('soundFile', '"soundFile"');
+          console.log(i, 'Reading table of content', o.url);
+          qs = JSON.parse(qs);
+          soundFile = qs.soundFile;
+          soundFile = new Buffer(soundFile, 'base64').toString('ascii');
+          soundFile = soundFile.split('/').pop();
+          soundFile = './data/content/sound/' + soundFile;
+        }
 
         let delAfterThisP = false;
         $('#main-wrapper .entry p').each((i, paragraph) => {
@@ -114,7 +114,7 @@ router.get('/content', (req, res) => {
 
         let entire = $('#main-wrapper .entry').html();
         
-        resolve({content:entire, img:img, title:o.title, sound: soundFile});
+        resolve({content:entire, img:img, title:o.title, soundFile: soundFile});
 
       });
     });

@@ -5,13 +5,13 @@ var express = require('express'),
   util = require('util'),
   cheerio = require('cheerio'),
   fs = require('fs'),
-  router = express.Router(),
+  routerMedia = express.Router(),
   download = require('./download');
 
 // get data files : images/sound
-router.get('/:folder', (req, res) => {
-  let folder = req.params.folder;
-  let url = 'http://badaronline.com/' + folder + '/nahwu1/';
+routerMedia.get('/:folderMedia', (req, res) => {
+  let folderMedia = req.params.folderMedia;
+  let url = 'http://badaronline.com/' + folderMedia + '/nahwu1/';
   request(url, (error, response, html) => {
     if (error) {
       console.log(error);
@@ -20,22 +20,31 @@ router.get('/:folder', (req, res) => {
 
     let $ = cheerio.load(html);
 
-    Promise.all($("td a").each((i, el) => {
+    let downloadUrl = [];
+    let countingDownload = 0;
+
+    $("td a").each((i, el) => {
+      var ext = $(el).attr('href').split('.').pop();
+      if(ext == 'jpg' || ext == 'png' || ext == 'mp3')
+      downloadUrl.push({url:$(el).attr('href')});
+    });
+
+    Promise.all(downloadUrl.map((el, i) => {
       
       return new Promise( (resolve, reject) => {
-        var fileName = $(el).attr('href');
+        var fileName = el.url;
         var fileUrl = url + fileName;
 
-        fileName = './data/content/' + folder + '/' + fileName;
+        fileName = './data/content/' + folderMedia + '/' + fileName;
 
         download(fileUrl, fileName, () => {
-          console.log(i + '. ' + fileUrl + ' downloaded...\n');
+          countingDownload++;
+          console.log(countingDownload + ' of ' + downloadUrl.length + '. ' + fileUrl + ' downloaded and moved to folder ' + folderMedia + '...\n');
         });
-        resolve({link:fileUrl, status:'success'})
+        resolve({link:fileUrl, status:'success / loaded'})
       });
 
     })).then((result) => {
-      console.log('-=+---------------------------+=-');
       result.map((data)=>{
         console.log(data.link, data.status);
       });
@@ -45,3 +54,6 @@ router.get('/:folder', (req, res) => {
   });
 
 });
+
+
+module.exports = routerMedia;

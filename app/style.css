@@ -1,0 +1,44 @@
+body{
+  font-family: 'Helvetica', 'Arial';
+}
+div{
+  max-width: 250px;
+}
+.counter div{
+  text-align: center;
+  padding: 10px;
+}
+.counter .number{
+  background-color: greenyellow;
+  font-size: 99px;
+}
+.counter button{
+  background-color: slategray;
+  text-align: center;
+  padding: 10px;
+  border: none;
+}
+
+#unidirectional input{
+  padding: 3px 10px;
+  font-size: 18px;
+  font-weight: 300;
+  margin: 0px;
+  width: 100%;
+}
+#unidirectional ul{
+  margin: 0px;
+  padding: 0px;
+  list-style: none;
+}
+#unidirectional li{
+  padding: 5px 10px;
+  background-color: orangered;
+  color: white;
+  font-size: 14px;
+  width: 100%;
+}
+
+a{
+  padding: 10px 20px;
+}

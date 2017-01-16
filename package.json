@@ -4,6 +4,7 @@
   "description": "scarpping data for badar app",
   "main": "app.js",
   "scripts": {
+    "app": "./node_modules/.bin/webpack-dev-server",
     "server": "./node_modules/.bin/nodemon ./server/app.js"
   },
   "repository": {

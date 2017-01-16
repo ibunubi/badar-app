@@ -38,3 +38,6 @@ jspm_packages
 
 # Data of contents
 data
+
+#
+bundle.js

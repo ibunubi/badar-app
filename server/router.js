@@ -99,7 +99,7 @@ router.get('/content', (req, res) => {
           soundFile = qs.soundFile;
           soundFile = new Buffer(soundFile, 'base64').toString('ascii');
           soundFile = soundFile.split('/').pop();
-          soundFile = './data/content/sound/' + soundFile;
+          soundFile = './data/content/sounds/' + soundFile;
         }
 
         let delAfterThisP = false;

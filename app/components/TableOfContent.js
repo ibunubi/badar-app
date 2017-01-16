@@ -10,7 +10,7 @@ const List = (props) => (
     </ul>
 );
 
-class Unidirectional extends Component {
+class TableOfContent extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -40,8 +40,6 @@ class Unidirectional extends Component {
       return (item.toLowerCase().search(keyword) > -1);
     });
     
-    console.log(filteredList);
-    
     this.setState({
       items: filteredList
     });
@@ -52,6 +50,11 @@ class Unidirectional extends Component {
     });
   }
   render() {
+    fetch('../../data/table-of-content.json')
+    .then((res) => res.json())
+    .then((data) => {
+    console.log('data:', data);
+    });
     return (
       <div id='unidirectional'>
         <p>Unidirectional...</p>
@@ -62,4 +65,4 @@ class Unidirectional extends Component {
   }
 }
 
-export default Unidirectional;
+export default TableOfContent;

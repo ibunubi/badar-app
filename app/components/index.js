@@ -1,8 +1,6 @@
 import React from 'react';
 
-import Hello from './Hello';
-import Counter from './Counter';
-import Unidirectional from './Unidirectional';
-import Nerds from './Nerds';
+import Welcome from './Welcome';
+import TableOfContent from './TableOfContent';
 
-export {Hello, Counter, Unidirectional, Nerds}
+export {Welcome,TableOfContent}

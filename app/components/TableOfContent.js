@@ -1,65 +1,36 @@
 import React, {Component} from 'react';
 
-const List = (props) => (
-    <ul>
-      {
-        props.items.map((item) => {
-          return <li key={item}>{item}</li>
-        })
-      }
-    </ul>
-);
+const Item = (props) => (
+  <ul>
+    {
+      props.items.map((item, key) => {
+        return <li key={key}>{item.title}</li>
+      })
+    }
+  </ul>
+)
 
 class TableOfContent extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      items: [],
-      initialItems: [
-        "Apples",
-        "Broccoli",
-        "Chicken",
-        "Duck",
-        "Eggs",
-        "Fish",
-        "Granola",
-        "Hash Browns"
-      ]
-    };
-
-    this.onChange = this.onChange.bind(this);
-  }
-  onChange(e) {
-    // console.log(e.target.value);
-    // console.log(this.refs.keyword.value);
+    this.state = {items: []};
     
-    var filteredList = this.state.initialItems;
-    var keyword = this.refs.keyword.value.toLowerCase();
-
-    filteredList = filteredList.filter((item) => {
-      return (item.toLowerCase().search(keyword) > -1);
-    });
-    
-    this.setState({
-      items: filteredList
-    });
+    this.handleClick = this.handleClick.bind(this);
   }
-  componentWillMount(){
-    this.setState({
-      items: this.state.initialItems
-    });
-  }
-  render() {
+  componentDidMount(){
     fetch('../../data/table-of-content.json')
     .then((res) => res.json())
     .then((data) => {
-    console.log('data:', data);
+      this.setState({items: data});
     });
+  }
+  handleClick() {
+    alert('Hello world!');
+  }
+  render() {
     return (
-      <div id='unidirectional'>
-        <p>Unidirectional...</p>
-        <input type="text" name="searh" ref="keyword" onChange={this.onChange} placeholder="Find Your List"/>
-        <List items={this.state.items} />
+      <div>
+        <Item items={this.state.items}/>
       </div>
     );
   }

@@ -10,8 +10,7 @@ import './style.css';
 
 const Nav = () => (
   <div>
-    <IndexLink activeClassName='active' to='/'>Home</IndexLink>&nbsp;
-    <IndexLink activeClassName='active' to='/table-of-content'>Table of Content</IndexLink>
+    <IndexLink activeClassName='active' to='/'>Home</IndexLink>
   </div>
 )
 
@@ -34,7 +33,6 @@ class Application extends Component {
           <Router history={hashHistory}>
             <Route path='/' component={Container}>
               <IndexRoute component={Welcome} />
-              <Route path='/table-of-content' component={TableOfContent} />
               <Route path='*' component={NotFound} />
             </Route>
           </Router>

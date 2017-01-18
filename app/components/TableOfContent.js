@@ -4,7 +4,7 @@ const Item = (props) => (
   <ul>
     {
       props.items.map((item, key) => {
-        return <li key={key}>{item.title}</li>
+        return <li key={key} onClick={props.onItemClick.bind(this,item)} >{item.title}</li>
       })
     }
   </ul>
@@ -24,13 +24,14 @@ class TableOfContent extends Component {
       this.setState({items: data});
     });
   }
-  handleClick() {
-    alert('Hello world!');
+  handleClick = (item,event) => {
+    console.log(item);
   }
   render() {
     return (
       <div>
-        <Item items={this.state.items}/>
+        <h1>Yeoman</h1>
+        <Item items={this.state.items} onItemClick={this.handleClick}/>
       </div>
     );
   }

@@ -20,19 +20,26 @@ const NotFound = () => (
 
 const Container = (props) => <div>
   <Nav />
+  <nav>
+    <TableOfContent/>
+  </nav>
   {props.children}
 </div>
 
 class Application extends Component {
   render() {
     return (
-      <Router history={hashHistory}>
-        <Route path='/' component={Container}>
-          <IndexRoute component={Welcome} />
-          <Route path='/table-of-content' component={TableOfContent} />
-          <Route path='*' component={NotFound} />
-        </Route>
-      </Router>
+      <div id="wrap">
+        <div id="main">
+          <Router history={hashHistory}>
+            <Route path='/' component={Container}>
+              <IndexRoute component={Welcome} />
+              <Route path='/table-of-content' component={TableOfContent} />
+              <Route path='*' component={NotFound} />
+            </Route>
+          </Router>
+        </div>
+      </div>
     )
   }
 }

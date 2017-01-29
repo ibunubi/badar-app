@@ -107,15 +107,20 @@ router.get('/content', (req, res) => {
           if(delAfterThisP == true) {
             $(paragraph).remove();
           }
-          if($(paragraph).text().toLowerCase() == "dengarkan kajian:") {
+          if($(paragraph).text().toLowerCase() == "dengarkan kajian:" || $(paragraph).hasClass('audioplayer_container')) {
             $(paragraph).remove();
             delAfterThisP = true;
           }
         });
+        $('#main-wrapper .entry a').each((i, anchor) => {
+          $(anchor).remove();
+        });
+        $('#main-wrapper .entry center').remove();
+        $('#main-wrapper .entry div.banner').remove();
 
         let entire = $('#main-wrapper .entry').html();
         
-        resolve({content:entire, img:img, title:o.title, onDisk:o.onDisk, soundFile: soundFile});
+        resolve({content:entire, img:img, title:o.title, onDisk:o.onDisk, soundFile: soundFile, url:o.url});
 
       });
     });

@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
+import { Router, Route, Link, IndexRoute, hashHistory, browserHistory, IndexLink } from 'react-router';
 
 const Item = (props) => (
   <ul>
     {
       props.items.map((item, key) => {
-        return <li key={key} onClick={props.onItemClick.bind(this,item)} >{item.title}</li>
+        return <li key={key}><Link activeClassName='active' to={'/detail/'+key} dangerouslySetInnerHTML={{__html: item.title}}/></li>
       })
     }
   </ul>
@@ -15,7 +16,7 @@ class TableOfContent extends Component {
     super(props);
     this.state = {items: []};
     
-    this.handleClick = this.handleClick.bind(this);
+    // this.handleClick = this.handleClick.bind(this);
   }
   componentDidMount(){
     fetch('../../data/table-of-content.json')
@@ -24,14 +25,11 @@ class TableOfContent extends Component {
       this.setState({items: data});
     });
   }
-  handleClick = (item,event) => {
-    console.log(item);
-  }
   render() {
     return (
       <div>
-        <h1>Yeoman</h1>
-        <Item items={this.state.items} onItemClick={this.handleClick}/>
+        <h1>Table of Content</h1>
+        <Item items={this.state.items}/>
       </div>
     );
   }

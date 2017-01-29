@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 
-import {Welcome,TableOfContent} from './components';
+import {Welcome,TableOfContent,Content} from './components';
 
 import { Router, Route, Link, IndexRoute, hashHistory, browserHistory, IndexLink } from 'react-router';
 
@@ -33,6 +33,7 @@ class Application extends Component {
           <Router history={hashHistory}>
             <Route path='/' component={Container}>
               <IndexRoute component={Welcome} />
+              <Route path="/detail/:contentId" component={Content}/>
               <Route path='*' component={NotFound} />
             </Route>
           </Router>

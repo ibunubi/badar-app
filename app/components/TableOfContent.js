@@ -14,7 +14,7 @@ const Item = (props) => (
 class TableOfContent extends Component {
   constructor(props) {
     super(props);
-    this.state = {items: []};
+    this.state = {items: [], initialItems: []};
     
     // this.handleClick = this.handleClick.bind(this);
   }
@@ -22,13 +22,20 @@ class TableOfContent extends Component {
     fetch('../../data/table-of-content.json')
     .then((res) => res.json())
     .then((data) => {
-      this.setState({items: data});
+      this.setState({items: data, initialItems: data});
     });
+  }
+  handleChange(event) {
+    let key = event.target.value.toLowerCase();
+    console.log(key);
   }
   render() {
     return (
       <div>
-        <h1>Table of Content</h1>
+        <header>
+          <h2>Badar Desktop</h2>
+          <input type="text" name="tocSearch" placeholder="Cari" onChange={this.handleChange} />
+        </header>
         <Item items={this.state.items}/>
       </div>
     );

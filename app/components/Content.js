@@ -14,7 +14,8 @@ class Content extends Component {
     });
   }
   shouldComponentUpdate(nextProps, nextState){
-    if(this.props.params.contentId != nextProps.params.contentId){
+    // console.log(this.props.params.contentId == nextProps.params.contentId);
+    // if(this.props.params.contentId != nextProps.params.contentId){
 
       if(typeof this.state.items[nextProps.params.contentId] != 'undefined'){
         let onDisk = this.state.items[nextProps.params.contentId].onDisk;
@@ -23,13 +24,11 @@ class Content extends Component {
         .then((res) => res.json())
         .then((data) => {
           this.setState({content: data});
-
-          console.log(this.state.content);
         });
       }
 
-    }
-    return (this.props.params.contentId != nextProps.params.contentId);
+    // }
+    return true;
   }
   render() {
     let content = <div>

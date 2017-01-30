@@ -7,37 +7,29 @@ import { Router, Route, Link, IndexRoute, hashHistory, browserHistory, IndexLink
 
 import './style.css';
 
-
-const Nav = () => (
-  <div>
-    <IndexLink activeClassName='active' to='/'>Home</IndexLink>
-  </div>
-)
-
 const NotFound = () => (
   <h1>404.. This page is not found!</h1>)
 
 const Container = (props) => <div>
-  <Nav />
   <nav>
     <TableOfContent/>
   </nav>
-  {props.children}
+  <div id="content">
+    {props.children}
+  </div>
 </div>
 
 class Application extends Component {
   render() {
     return (
-      <div id="wrap">
-        <div id="main">
-          <Router history={hashHistory}>
-            <Route path='/' component={Container}>
-              <IndexRoute component={Welcome} />
-              <Route path="/detail/:contentId" component={Content}/>
-              <Route path='*' component={NotFound} />
-            </Route>
-          </Router>
-        </div>
+      <div id="main">
+        <Router history={hashHistory}>
+          <Route path='/' component={Container}>
+            <IndexRoute component={Welcome} />
+            <Route path="/detail/:contentId" component={Content}/>
+            <Route path='*' component={NotFound} />
+          </Route>
+        </Router>
       </div>
     )
   }

@@ -31,15 +31,15 @@ class Content extends Component {
     return true;
   }
   render() {
-    let content = <div>
-      click table of content on the side bar
+    let content = <div className="paper">
+      <em>&#x261C; click table of content on the side bar</em>
     </div>
     if(this.state.content.hasOwnProperty('content')){
       let mainContent = this.state.content['content'];
       if(mainContent != null) {
         mainContent = mainContent.replace(/.\/data/g, '../../data');
       } else {
-        mainContent = `<a href='${this.state.content['url']}'>This content is downloaded yet</a>`;
+        mainContent = `<a href='${this.state.content['url']}'>Content for this sub menu is not downloaded properly !</a>`;
       }
       content = <div className="paper">
         <h1 dangerouslySetInnerHTML={{__html: `${this.state.content['title']}` }} />

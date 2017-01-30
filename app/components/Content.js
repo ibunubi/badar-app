@@ -41,7 +41,7 @@ class Content extends Component {
       } else {
         mainContent = `<a href='${this.state.content['url']}'>This content is downloaded yet</a>`;
       }
-      content = <div>
+      content = <div className="paper">
         <h1 dangerouslySetInnerHTML={{__html: `${this.state.content['title']}` }} />
         <div dangerouslySetInnerHTML={{__html: `${mainContent}` }} />
       </div>;

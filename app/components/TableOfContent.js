@@ -36,7 +36,9 @@ class TableOfContent extends Component {
           <h2>Badar Desktop</h2>
           <input type="text" name="tocSearch" placeholder="Cari" onChange={this.handleChange} />
         </header>
-        <Item items={this.state.items}/>
+        <div id="toc-list">
+          <Item items={this.state.items}/>
+        </div>
       </div>
     );
   }

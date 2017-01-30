@@ -14,44 +14,87 @@ body{
 #main, #wrap, #main > div{
   overflow: hidden;
   max-height: 100%;
+  height: 100%;
 }
 nav{
   float: left;
   width: 30%;
   max-height: 100%;
+  height: 100%;
 }
 nav ul{
   list-style: none;
   padding: 0px;
   font-size: .8em;
-  overflow-y: auto;
-  height: 100px;
+}
+nav ul a{
+  color: #121212;
+  padding: 7px 10px;
+  display: block;
+  text-decoration: none;
+}
+nav ul a:hover{
+  background: #f8f8f8;
+}
+nav ul a.active{
+  background: #70ce15;
 }
 nav > div{
   overflow: hidden;
   position: relative;
   padding-top: 80px;
-  max-height: 100%;
+  height: 100%;
 }
 nav header{
   position: absolute;
   top: 0px;
   width: 100%;
   height: 70px;
-  background-color: #f8f8f8;
   padding: 5px 10px;
 }
-nav header h2{
+nav header h2, h1{
   font-weight: 300;
   margin: 0px;
   font-size: 24px;
 }
 nav header input{
-  border: solid 1px #e0dddd;
-  padding: 5px 10px;
+  background: #f8f8f8;
+  padding: 7px 10px;
   width: 100%;
+  border: none;
+}
+nav #toc-list{
+  position: absolute;
+  top: 70px;
+  bottom: 0px;
+  width: 100%;
+  overflow: auto;
 }
 #content{
   float: right;
-  width: 69%;
+  width: 70%;
+  background: #f8f8f8;
+  height: 100%;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  overflow: auto;
+}
+#content .paper{
+  width: 90%;
+  background: #FFF;
+  margin: auto;
+  padding: 15px 20px 30px;
+  color: #555;
+}
+#content .paper h1{
+  padding-bottom: 20px;
+  border-bottom: solid 1px #f8f8f8;
+  color: #666;
+  margin-bottom: 20px;
+}
+#content .paper p{
+  font-weight: 300;
+}
+#content .paper p.arab{
+  font-weight: normal;
 }

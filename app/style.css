@@ -79,6 +79,9 @@ nav #toc-list{
   padding-bottom: 25px;
   overflow: auto;
 }
+#content .paper em{
+  font-size: 12px;
+}
 #content .paper{
   width: 90%;
   background: #FFF;
@@ -94,7 +97,9 @@ nav #toc-list{
   padding-bottom: 20px;
   border-bottom: solid 1px #f8f8f8;
   color: #666;
-  margin-bottom: 20px;
+}
+#content .paper .audio{
+  padding: 20px 0px;
 }
 #content .paper p{
   font-weight: 300;

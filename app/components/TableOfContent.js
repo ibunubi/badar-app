@@ -16,7 +16,7 @@ class TableOfContent extends Component {
     super(props);
     this.state = {items: [], initialItems: []};
     
-    // this.handleClick = this.handleClick.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
   componentDidMount(){
     fetch('../../data/table-of-content.json')
@@ -26,8 +26,17 @@ class TableOfContent extends Component {
     });
   }
   handleChange(event) {
-    let key = event.target.value.toLowerCase();
-    console.log(key);
+    let keyword = event.target.value.toLowerCase();
+    
+    let oriItems = this.state.initialItems;
+    
+    let filteredList = oriItems.filter((item) => {
+      return (item.title.toLowerCase().search(keyword) > -1);
+    });
+    
+    this.setState({
+      items: filteredList
+    });
   }
   render() {
     return (
